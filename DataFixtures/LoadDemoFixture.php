@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\CoreBundle\DataFixtures\Demo\Main;
+namespace Claroline\DemoBundle\DataFixtures;
 
 use Claroline\CoreBundle\DataFixtures\Demo\LoadContentData;
 use Claroline\CoreBundle\DataFixtures\Demo\LoadRegionData;

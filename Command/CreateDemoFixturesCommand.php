@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Claroline\CoreBundle\Command\Dev;
+namespace Claroline\DemoBundle\Command;
 
-use Claroline\CoreBundle\DataFixtures\Demo\Main\LoadDemoFixture;
+use Claroline\DemoBundle\DataFixtures\LoadDemoFixture;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,7 +21,7 @@ class CreateDemoFixturesCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
-        $this->setName('claroline:fixture:demo')
+        $this->setName('claroline:demo:fixture')
             ->setDescription('Load the demo fixtures');
     }
 
