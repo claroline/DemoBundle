@@ -21,7 +21,7 @@ class CreateDemoFixturesCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
-        $this->setName('claroline:demo:fixture')
+        $this->setName('claroline:demo:load')
             ->setDescription('Load the demo fixtures');
     }
 
