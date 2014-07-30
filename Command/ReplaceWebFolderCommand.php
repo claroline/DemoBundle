@@ -34,8 +34,8 @@ class ReplaceWebFolderCommand extends ContainerAwareCommand
         $webProd = "{$rootDir}{$ds}..{$ds}web{$ds}";
         $appFile = 'app.php';
         $reinstallFile = 'reinstall.html.php';
-        unlink($webProd . $appFile);
-        unlink($webProd . $reinstallFile);
+        @unlink($webProd . $appFile);
+        @unlink($webProd . $reinstallFile);
         copy($webSrc . $appFile, $webProd . $appFile);
         copy($webSrc . $reinstallFile, $webProd . $reinstallFile);
     }
