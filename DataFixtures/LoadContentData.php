@@ -21,46 +21,34 @@ class LoadContentData extends AbstractFixture
 {
     public function load(ObjectManager $manager)
     {
-        $titles = array(
-            'ClarolineConnect©',
-            '',
-            '',
-            'Demo',
-            'Youtube',
-            'Vimeo',
-            'Wikipedia'
+        $contents = array(
+            array('',                  'text7', 'home',      'content-6'),
+            array('',                  'text8', 'home',      'content-6'),
+            array('ClarolineConnect©', 'text1', 'home',      'content-6'),
+            array('',                  'text2', 'home',      'content-6'),
+            array('',                  'text3', 'home',      'content-5'),
+            array('Demo',              'text4', 'home',      'content-7'),
+            array('Youtube',           'text3', 'opengraph', 'content-12'),
+            array('Vimeo',             'text5', 'opengraph', 'content-12'),
+            array('Wikipedia',         'text6', 'opengraph', 'content-12')
         );
 
         $textDir = __DIR__. '/files/homepage';
         $locales = array('en', 'fr', 'es');
 
-        foreach ($locales as $locale) {
-            $text[$locale] = array(
-                file_get_contents($textDir . '/text1.' . $locale . '.html', 'r'),
-                file_get_contents($textDir . '/text2.' . $locale . '.html', 'r'),
-                file_get_contents($textDir . '/text3.' . $locale . '.html', 'r'),
-                file_get_contents($textDir . '/text4.' . $locale . '.html', 'r'),
-                file_get_contents($textDir . '/text3.' . $locale . '.html', 'r'),
-                file_get_contents($textDir . '/text5.' . $locale . '.html', 'r'),
-                file_get_contents($textDir . '/text6.' . $locale . '.html', 'r')
-            );
-        }
-
-        $types = array('home', 'home', 'home', 'home', 'opengraph', 'opengraph', 'opengraph', 'opengraph');
-        $sizes = array(
-            'content-6', 'content-6', 'content-5', 'content-7', 'content-12', 'content-12', 'content-12', 'content-12'
-        );
-
-        foreach ($titles as $i => $title) {
-            $type = $manager->getRepository('ClarolineCoreBundle:Home\Type')->findOneBy(array('name' => $types[$i]));
-
-            $content[$i] = new Content();
-            $content[$i]->setTitle($title);
+        foreach ($contents as $data) {
+            $title = $data[0];
+            $textName = $data[1];
+            $type  = $manager->getRepository('ClarolineCoreBundle:Home\Type')->findOneBy(array('name' => $data[2]));
+            $size  = $data[3];
+            $ds = DIRECTORY_SEPARATOR;
+            $content = new Content();
+            $content->setTitle($title);
 
             foreach ($locales as $locale) {
-                $content[$i]->setContent($text[$locale][$i]);
-                $content[$i]->setTranslatableLocale($locale);
-                $manager->persist($content[$i]);
+                $content->setContent(file_get_contents($textDir . $ds . $textName . '.' . $locale . '.html', 'r'));
+                $content->setTranslatableLocale($locale);
+                $manager->persist($content);
                 $manager->flush();
             }
 
@@ -69,13 +57,10 @@ class LoadContentData extends AbstractFixture
             );
 
             $contentType = new Content2Type($first);
-
-            $contentType->setContent($content[$i]);
+            $contentType->setContent($content);
             $contentType->setType($type);
-            $contentType->setSize($sizes[$i]);
-
+            $contentType->setSize($size);
             $manager->persist($contentType);
-
             $manager->flush();
         }
     }
