@@ -1,3 +1,3 @@
 parameters:
   claroline.demo_bundle.period: 7200 #seconds
-  claroline.demo_bundle.display_counter: true
+  claroline.demo_bundle.display_counter: false
