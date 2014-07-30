@@ -22,12 +22,12 @@ class LoadContentData extends AbstractFixture
     public function load(ObjectManager $manager)
     {
         $contents = array(
-            array('',                  'text7', 'home',      'content-6'),
-            array('',                  'text8', 'home',      'content-6'),
             array('ClarolineConnect©', 'text1', 'home',      'content-6'),
             array('',                  'text2', 'home',      'content-6'),
             array('',                  'text3', 'home',      'content-5'),
             array('Demo',              'text4', 'home',      'content-7'),
+            array('',                  'text7', 'home',      'content-6'),
+            array('',                  'text8', 'home',      'content-6'),
             array('Youtube',           'text3', 'opengraph', 'content-12'),
             array('Vimeo',             'text5', 'opengraph', 'content-12'),
             array('Wikipedia',         'text6', 'opengraph', 'content-12')

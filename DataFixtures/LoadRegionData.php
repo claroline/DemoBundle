@@ -68,11 +68,8 @@ class LoadRegionData extends AbstractFixture
     {
         $content = new Content($manager);
         $content->setTitle($name);
-
         $manager->persist($content);
-
         $type = $manager->getRepository('ClarolineCoreBundle:Home\Type')->findOneBy(array('name' => 'menu'));
-
         $first = $manager->getRepository('ClarolineCoreBundle:Home\Content2Type')->findOneBy(
             array('back' => null, 'type' => $type)
         );
@@ -80,16 +77,13 @@ class LoadRegionData extends AbstractFixture
         $contentType = new Content2Type($first);
         $contentType->setContent($content);
         $contentType->setType($type);
-
         $manager->persist($contentType);
-
         $manager->flush();
 
         foreach ($links as $name => $link) {
             $linkContent = new Content();
             $linkContent->setTitle($name);
             $linkContent->setContent($link['url']);
-
             $manager->persist($linkContent);
             $manager->flush();
 
@@ -107,9 +101,7 @@ class LoadRegionData extends AbstractFixture
             $subContent = new SubContent($first);
             $subContent->setFather($content);
             $subContent->setChild($linkContent);
-
             $manager->persist($subContent);
-
             $manager->flush();
         }
 
@@ -127,9 +119,7 @@ class LoadRegionData extends AbstractFixture
         $contentRegion = new Content2Region($first);
         $contentRegion->setContent($content);
         $contentRegion->setRegion($region);
-
         $manager->persist($contentRegion);
-
         $manager->flush();
     }
 }
