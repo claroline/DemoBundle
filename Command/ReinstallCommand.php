@@ -89,7 +89,9 @@ class ReinstallCommand extends ContainerAwareCommand
         $targets = [];
 
         foreach (new \DirectoryIterator($dir) as $fileinfo) {
-            if (!$fileinfo->isDot()) $targets[] = $fileinfo->getPathname();
+            if (!$fileinfo->isDot() && '.gitkeep' !== $fileinfo->getFilename()) {
+                $targets[] = $fileinfo->getPathname();
+            }
         }
 
         $fs->remove($targets);
