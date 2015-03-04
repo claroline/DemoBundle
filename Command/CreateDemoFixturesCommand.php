@@ -13,8 +13,10 @@ namespace Claroline\DemoBundle\Command;
 
 use Claroline\DemoBundle\DataFixtures\LoadDemoFixture;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
+use Psr\Log\LogLevel;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CreateDemoFixturesCommand extends ContainerAwareCommand
@@ -33,11 +35,13 @@ class CreateDemoFixturesCommand extends ContainerAwareCommand
         $referenceRepo = new ReferenceRepository($em);
         $fixture->setReferenceRepository($referenceRepo);
         $fixture->setContainer($this->getContainer());
-        $fixture->setLogger(
-            function ($message) use ($output) {
-                $output->writeln($message);
-            }
+        $verbosityLevelMap = array(
+            LogLevel::NOTICE => OutputInterface::VERBOSITY_NORMAL,
+            LogLevel::INFO   => OutputInterface::VERBOSITY_NORMAL,
+            LogLevel::DEBUG  => OutputInterface::VERBOSITY_NORMAL
         );
+        $consoleLogger = new ConsoleLogger($output, $verbosityLevelMap);
+        $fixture->setLogger($consoleLogger);
         $fixture->load($em);
         $output->writeln('Done');
     }
