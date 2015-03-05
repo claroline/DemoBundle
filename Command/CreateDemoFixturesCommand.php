@@ -29,20 +29,21 @@ class CreateDemoFixturesCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Loading demo fixtures...');
-        $fixture = new LoadDemoFixture();
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $referenceRepo = new ReferenceRepository($em);
-        $fixture->setReferenceRepository($referenceRepo);
-        $fixture->setContainer($this->getContainer());
         $verbosityLevelMap = array(
             LogLevel::NOTICE => OutputInterface::VERBOSITY_NORMAL,
             LogLevel::INFO   => OutputInterface::VERBOSITY_NORMAL,
             LogLevel::DEBUG  => OutputInterface::VERBOSITY_NORMAL
         );
         $consoleLogger = new ConsoleLogger($output, $verbosityLevelMap);
+        $consoleLogger->log(LogLevel::INFO, 'Loading demo fixtures...');
+        $entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $referenceRepo = new ReferenceRepository($entityManager);
+        $fixture = new LoadDemoFixture();
+        $fixture->setReferenceRepository($referenceRepo);
+        $fixture->setContainer($this->getContainer());
         $fixture->setLogger($consoleLogger);
-        $fixture->load($em);
-        $output->writeln('Done');
+        $fixture->load($entityManager);
+
+        $consoleLogger->log(LogLevel::INFO, 'Done');
     }
 }
