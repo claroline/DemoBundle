@@ -70,9 +70,6 @@ class ReinstallCommand extends ContainerAwareCommand
         $connection->connect();
         //install the platform
         $installCommand->run(new ArrayInput(array('command' => null)), $output);
-        //clear the cache
-        //$warmCacheCommand->run(new ArrayInput(array('command' => null)), $output);
-        //$warmCacheCommand->run(new ArrayInput(array('command' => null, '--env' => 'prod')), $output);
     }
 
     //@todo clean the upload directory aswell
@@ -83,14 +80,19 @@ class ReinstallCommand extends ContainerAwareCommand
 
     }
 
-    private function removeDirectoryContent($dir)
+    private function removeDirectoryContent($directory)
     {
         $fs = new Filesystem();
         $targets = [];
 
-        foreach (new \DirectoryIterator($dir) as $fileinfo) {
-            if (!$fileinfo->isDot() && '.gitkeep' !== $fileinfo->getFilename()) {
-                $targets[] = $fileinfo->getPathname();
+        foreach (new \DirectoryIterator($directory) as $fileinfo) {
+            if (!$fileinfo->isDot()) {
+                if ($fileinfo->isDir()) {
+                    $this->removeDirectoryContent($fileinfo->getPathname());
+                }
+                else if ('.gitkeep' !== $fileinfo->getFilename()) {
+                    $targets[] = $fileinfo->getPathname();
+                }
             }
         }
 
