@@ -62,14 +62,22 @@ class LoadDemoFixture extends LoggableFixture implements ContainerAwareInterface
         $start = time();
 
         $this->initialize($manager);
+
+        $this->log('createUsers');
         $this->createUsers();
+        $this->log('createGroups');
         $this->createGroups();
+        $this->log('createWorkspaces');
         $this->createWorkspaces();
+        $this->log('createFilesAndDirectories');
         $this->createFilesAndDirectories();
+        $this->log('createShortcuts');
         $this->createShortcuts();
-        $this->createMessages();
+        $this->log('createHomepage');
         $this->createHomepage();
+        $this->log('createActivities');
         $this->createActivities();
+        $this->log('loadPluginFixtures');
         $this->loadPluginFixtures();
 
         $end = time();
@@ -285,6 +293,7 @@ class LoadDemoFixture extends LoggableFixture implements ContainerAwareInterface
             'export' => false,
             'copy' => false
         );
+        /** @var \Claroline\CoreBundle\Manager\RightsManager $rightsManager */
         $rightsManager = $this->container->get('claroline.manager.rights_manager');
         $rightsManager->create(
             $permissions,
@@ -303,18 +312,6 @@ class LoadDemoFixture extends LoggableFixture implements ContainerAwareInterface
             $collaboratorRole,
             $this->getReference('directory/Travaux'),
             true
-        );
-    }
-
-    private function createMessages()
-    {
-        $this->loadFixture(
-            new LoadMessagesData(
-                array(
-                    array('from' => 'John Doe', 'to' => 'JaneDoe', 'object' => 'Welcome !'),
-                    array('to' => 'JohnDoe', 'from' => 'Jane Doe', 'object' => 'I have a problem.')
-                )
-            )
         );
     }
 
